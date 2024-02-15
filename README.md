@@ -1,4 +1,4 @@
-lexertl14: The Modular Lexical Analyser Generator
+lexertl17: The Modular Lexical Analyser Generator
 =======
 
 lexertl is a header-only library for writing lexical analysers. With lexertl you can:
