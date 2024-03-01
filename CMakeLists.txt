@@ -16,6 +16,10 @@ target_include_directories(lexertl INTERFACE
 	$<INSTALL_INTERFACE:include>
 )
 
+if (BUILD_EXAMPLES)
+	add_subdirectory(examples)
+endif()
+
 if (BUILD_TESTING)
 	enable_testing()
 	add_subdirectory(tests)
