@@ -390,6 +390,11 @@ namespace lexertl
             return _statemap;
         }
 
+        const macro_map& macros() const
+        {
+            return _macro_map;
+        }
+
         const token_vector_vector_vector& regexes() const
         {
             return _regexes;

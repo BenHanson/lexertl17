@@ -723,7 +723,7 @@ namespace lexertl
                     greedy_ = node_->greedy();
 
                     if (!(flags_ & *regex_flags::allow_suppressed_rules))
-                        used_ids_.insert(id_);
+                        used_ids_.insert(node_->unique_id());
                 }
             }
 
