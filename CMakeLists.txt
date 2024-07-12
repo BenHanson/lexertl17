@@ -58,7 +58,7 @@ write_basic_package_version_file(
     ${CMAKE_BINARY_DIR}/cmake/lexertlConfigVersion.cmake
 	COMPATIBILITY AnyNewerVersion
 )
-install(FILES "lexertlConfig.cmake" "${CMAKE_CURRENT_BINARY_DIR}/lexertlConfigVersion.cmake"
+install(FILES "${CMAKE_CURRENT_BINARY_DIR}/cmake/lexertlConfig.cmake" "${CMAKE_CURRENT_BINARY_DIR}/cmake/lexertlConfigVersion.cmake"
 	DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/lexertl
 )
 
