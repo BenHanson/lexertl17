@@ -92,7 +92,7 @@ void lex_unicode_data(lexertl::memory_file& mf_, std::ostream& os_,
 
 	for (; i_ != e_; ++i_)
 	{
-		os_ << "\n    static const char *" << i_->first <<
+		os_ << "\n    static const char* " << i_->first <<
 			"()\n" << "    {\n";
 		line_ = "        return \"[";
 
@@ -306,7 +306,7 @@ void lex_blocks_data(lexertl::memory_file& mf_, std::ostream& dcpps_,
 			{
 				return c == '-' ? '_' : c;
 			});
-		dcpps_ << "\n    static const char *In" << fname_ <<
+		dcpps_ << "\n    static const char* In" << fname_ <<
 			"()\n" << "    {\n" << "        return " << range_ <<
 			";\n    }\n";
 
@@ -385,7 +385,7 @@ void lex_scripts_data(lexertl::memory_file& mf_, std::ostream& scpps_,
 
 	for (; i_ != e_; ++i_)
 	{
-		scpps_ << "\n    static const char *Is" << i_->first <<
+		scpps_ << "\n    static const char* Is" << i_->first <<
 			"()\n" << "    {\n";
 		line_ = "        return \"[";
 
@@ -445,7 +445,7 @@ int main()
 			fs::create_directory("output");
 		}
 
-		// http://www.unicode.org/Public/15.0.0/ucd/
+		// http://www.unicode.org/Public/16.0.0/ucd/
 		lexertl::memory_file bmf_("Blocks.txt");
 		lexertl::memory_file smf_("Scripts.txt");
 		lexertl::memory_file umf_("UnicodeData.txt");
