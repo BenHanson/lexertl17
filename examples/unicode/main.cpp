@@ -19,9 +19,9 @@ void test_unicode()
     r_.reset(i_, i_);
 
     const char utf8_[] = "\xf0\x90\x8d\x86\xe6\x97\xa5\xd1\x88\x7f";
-    lexertl::basic_utf8_in_iterator<const char *, int> u8iter_(utf8_,
+    lexertl::basic_utf8_in_iterator<const char *, char32_t> u8iter_(utf8_,
         utf8_ + sizeof(utf8_));
-    int i = *u8iter_; // 0x10346
+    char32_t i = *u8iter_; // 0x10346
 
     i = *++u8iter_; // 0x65e5
     i = *u8iter_++; // 0x65e5
@@ -29,7 +29,7 @@ void test_unicode()
     i = *++u8iter_; // 0x7f
 
     const wchar_t utf16_[] = L"\xdbff\xdfff\xd801\xdc01\xd800\xdc00\xd7ff";
-    lexertl::basic_utf16_in_iterator<const wchar_t *, int> u16iter_(utf16_,
+    lexertl::basic_utf16_in_iterator<const wchar_t *, char32_t> u16iter_(utf16_,
         utf16_ + sizeof(utf16_) / sizeof(wchar_t));
 
     i = *u16iter_; // 0x10ffff
@@ -38,19 +38,18 @@ void test_unicode()
     i = *u16iter_; // 0x10000
     i = *++u16iter_; // 0xd7ff
 
-    // Not all compilers have char32_t, so use int for now
-    lexertl::basic_rules<char, int> rules_(*lexertl::regex_flags::icase);
-    lexertl::basic_state_machine<int> sm_;
-    const int in_[] = {0x393, ' ', 0x393, 0x398, ' ', 0x398,
+    lexertl::basic_rules<char, char32_t> rules_(*lexertl::regex_flags::icase);
+    lexertl::u32state_machine sm_;
+    const char32_t in_[] = {0x393, ' ', 0x393, 0x398, ' ', 0x398,
         '1', ' ', 'i', 'd', 0x41f, 0};
-    std::basic_string<int> input_(in_);
-    const int *iter_ = input_.c_str();
-    const int *end_ = iter_ + input_.size();
-    lexertl::match_results<const int *> results_(iter_, end_);
+    std::u32string input_(in_);
+    const char32_t* iter_ = input_.c_str();
+    const char32_t* end_ = iter_ + input_.size();
+    lexertl::u32cmatch results_(iter_, end_);
 
     rules_.push("\\p{LC}[\\p{LC}0-9]*", 1);
-    lexertl::basic_generator<lexertl::basic_rules<char, int>,
-        lexertl::basic_state_machine<int> >::build(rules_, sm_);
+    lexertl::basic_generator<lexertl::basic_rules<char, char32_t>,
+        lexertl::u32state_machine>::build(rules_, sm_);
 
 #ifdef WIN32
     HANDLE hStdOut = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -68,17 +67,18 @@ void test_unicode()
         lexertl::lookup(sm_, results_);
 
 #ifdef WIN32
-        str_.assign(lexertl::basic_utf16_out_iterator<const int *, wchar_t>
+        str_.assign(lexertl::basic_utf16_out_iterator<const char32_t *, wchar_t>
             (results_.first, results_.second),
-            lexertl::basic_utf16_out_iterator<const int *, wchar_t>
+            lexertl::basic_utf16_out_iterator<const char32_t *, wchar_t>
             (results_.second, results_.second));
         std::wcout << L"Id: " << results_.id << L", Token: '";
-        ::WriteConsoleW(hStdOut, str_.c_str(), str_.size(), &dwBytesWritten, 0);
+        ::WriteConsoleW(hStdOut, str_.c_str(), static_cast<DWORD>(str_.size()),
+            &dwBytesWritten, nullptr);
         std::wcout << '\'' << std::endl;
 #else
-        str_.assign(lexertl::basic_utf8_out_iterator<const int *>
+        str_.assign(lexertl::basic_utf8_out_iterator<const char32_t *>
             (results_.first, results_.second),
-            lexertl::basic_utf8_out_iterator<const int *>
+            lexertl::basic_utf8_out_iterator<const char32_t *>
             (results_.second, results_.second));
         std::cout << "Id: " << results_.id << ", Token: '" <<
             str_ << '\'' << std::endl;
