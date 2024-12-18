@@ -8,6 +8,7 @@
 #define LEXERTL_UTF_ITERATORS_HPP
 
 #include <iterator>
+#include <stdexcept>
 
 namespace lexertl
 {
