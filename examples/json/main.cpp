@@ -1,31 +1,36 @@
 #include <lexertl/generator.hpp>
 #include <lexertl/lookup.hpp>
+#include <lexertl/match_results.hpp>
 #include <lexertl/memory_file.hpp>
+#include <lexertl/rules.hpp>
+#include <lexertl/state_machine.hpp>
 #include <lexertl/utf_iterators.hpp>
+
+#include <exception>
+#include <iostream>
 
 int main()
 {
     try
     {
-        typedef lexertl::basic_rules<char, char32_t> urules;
-        typedef lexertl::basic_state_machine<char32_t> usm;
-        typedef lexertl::basic_utf8_in_iterator<const char *, char32_t>
-            utf_in_iter;
-        typedef lexertl::basic_utf8_out_iterator<utf_in_iter>
-            utf_out_iter;
+        using urules = lexertl::basic_rules<char, char32_t> ;
+        using usm = lexertl::basic_state_machine<char32_t>;
+        using utf_out_iter =
+            lexertl::basic_utf8_out_iterator<lexertl::cutf8_in_utf32_out_iterator>;
         urules rules;
         usm sm;
         lexertl::memory_file file("C:\\json.txt");
         const char *begin = file.data();
         const char *end = begin + file.size();
-        lexertl::recursive_match_results<utf_in_iter> results(utf_in_iter(begin, end),
-            utf_in_iter(end, end));
+        lexertl::recursive_match_results<lexertl::cutf8_in_utf32_out_iterator>
+            results(lexertl::cutf8_in_utf32_out_iterator(begin, end),
+            lexertl::cutf8_in_utf32_out_iterator(end, end));
         enum {eEOF, eString, eNumber, eBoolean, eOpenOb, eName, eCloseOb,
             eOpenArr, eCloseArr, eNull};
 
         // http://code.google.com/p/bsn-goldparser/wiki/JsonGrammar
-        rules.insert_macro("STRING", "[\"]([ -\\x10ffff]{-}[\"\\\\]|"
-            "\\\\([\"\\\\/bfnrt]|u[0-9a-fA-F]{4}))*[\"]");
+        rules.insert_macro("STRING", R"(["]([ -\x10ffff]{-}["\\]|)"
+            R"(\\(["\\/bfnrt]|u[0-9a-fA-F]{4}))*["])");
         rules.insert_macro("NUMBER", "-?(0|[1-9]\\d*)([.]\\d+)?([eE][-+]?\\d+)?");
         rules.insert_macro("BOOL", "true|false");
         rules.insert_macro("NULL", "null");
@@ -47,7 +52,7 @@ int main()
 
         rules.push("OBJECT,OB_COMMA", "[}]", eCloseOb, "<");
         rules.push("OBJECT,NAME", "{STRING}", eName, "COLON");
-        rules.push("COLON", ":", rules.skip(), "OB_VALUE");
+        rules.push("COLON", ":", urules::skip(), "OB_VALUE");
 
         rules.push("OB_VALUE", "{STRING}", eString, "OB_COMMA");
         rules.push("OB_VALUE", "{NUMBER}", eNumber, "OB_COMMA");
@@ -56,7 +61,7 @@ int main()
         rules.push("OB_VALUE", "[{]", eOpenOb, ">OBJECT:OB_COMMA");
         rules.push("OB_VALUE", "[[]", eOpenArr, ">ARRAY:OB_COMMA");
 
-        rules.push("OB_COMMA", ",", rules.skip(), "NAME");
+        rules.push("OB_COMMA", ",", urules::skip(), "NAME");
 
         rules.push("ARRAY,ARR_COMMA", "\\]", eCloseArr, "<");
         rules.push("ARRAY,ARR_VALUE", "{STRING}", eString, "ARR_COMMA");
@@ -66,9 +71,9 @@ int main()
         rules.push("ARRAY,ARR_VALUE", "[{]", eOpenOb, ">OBJECT:ARR_COMMA");
         rules.push("ARRAY,ARR_VALUE", "[[]", eOpenArr, ">ARRAY:ARR_COMMA");
 
-        rules.push("ARR_COMMA", ",", rules.skip(), "ARR_VALUE");
+        rules.push("ARR_COMMA", ",", urules::skip(), "ARR_VALUE");
 
-        rules.push("*", "[ \t\r\n]+", rules.skip(), ".");
+        rules.push("*", "[ \t\r\n]+", urules::skip(), ".");
 
         lexertl::basic_generator<urules, usm>::build(rules, sm);
         // Read-ahead
@@ -80,13 +85,13 @@ int main()
 
             if (results.id == eString)
             {
-                std::cout << std::string(utf_out_iter(results.first + 1, results.second - 1),
-                    utf_out_iter(results.second - 1, results.second - 1));
+                std::cout << std::string(utf_out_iter(results.first + 1),
+                    utf_out_iter(results.second - 1));
             }
             else
             {
-                std::cout << std::string(utf_out_iter(results.first, results.second),
-                    utf_out_iter(results.second, results.second));
+                std::cout << std::string(utf_out_iter(results.first),
+                    utf_out_iter(results.second));
             }
 
             std::cout << " state = " << results.state << '\n';

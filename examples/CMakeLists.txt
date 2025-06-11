@@ -14,6 +14,7 @@
 #    add_subdirectory("${dir}")
 #  endif()
 #endforeach()
+set(CMAKE_CXX_STANDARD 17)
 
 add_subdirectory(calc)
 add_subdirectory(date_test)
