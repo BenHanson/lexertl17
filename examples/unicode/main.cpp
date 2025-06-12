@@ -29,7 +29,8 @@ void test_unicode()
     i = *++u8iter_; // 0x7f
 
     const char32_t utf32_[] = U"\U0010ffff\U00010401\U00010000\U0000d7ff";
-    lexertl::basic_utf16_out_iterator<const char32_t*, char16_t> u16iter_(utf32_);
+    lexertl::basic_utf16_out_iterator<const char32_t*, char16_t>
+        u16iter_(utf32_, utf32_ + sizeof(utf32_) / sizeof(utf32_[0]));
     char16_t i16 = *u16iter_; // 0xdbff
 
     assert(i16 == 0xdbff);
@@ -70,10 +71,9 @@ void test_unicode()
     lexertl::basic_rules<char, char32_t> rules_(*lexertl::regex_flags::icase);
     lexertl::u32state_machine sm_;
     const char32_t in_[] = {0x393, ' ', 0x393, 0x398, ' ', 0x398,
-        '1', ' ', 'i', 'd', 0x41f, 0};
-    std::u32string input_(in_);
-    const char32_t* iter_ = input_.c_str();
-    const char32_t* end_ = iter_ + input_.size();
+        '1', ' ', 'i', 'd', 0x41f};
+    const char32_t* iter_ = in_;
+    const char32_t* end_ = in_ + sizeof(in_) / sizeof(in_[0]);
     lexertl::u32cmatch results_(iter_, end_);
 
     rules_.push("\\p{LC}[\\p{LC}0-9]*", 1);
@@ -97,16 +97,18 @@ void test_unicode()
 
 #ifdef WIN32
         str_.assign(lexertl::basic_utf16_out_iterator<const char32_t *, wchar_t>
-            (results_.first),
+            (results_.first, results_.second),
             lexertl::basic_utf16_out_iterator<const char32_t *, wchar_t>
-            (results_.second));
+            (results_.second, results_.second));
         std::wcout << L"Id: " << results_.id << L", Token: '";
         ::WriteConsoleW(hStdOut, str_.c_str(), static_cast<DWORD>(str_.size()),
             &dwBytesWritten, nullptr);
         std::wcout << '\'' << std::endl;
 #else
-        str_.assign(lexertl::basic_utf8_out_iterator<const char32_t *>(results_.first),
-            lexertl::basic_utf8_out_iterator<const char32_t *>(results_.second));
+        str_.assign(lexertl::basic_utf8_out_iterator<const char32_t *>
+            (results_.first, results.second),
+            lexertl::basic_utf8_out_iterator<const char32_t *>
+            (results_.second, results.second));
         std::cout << "Id: " << results_.id << ", Token: '" <<
             str_ << '\'' << std::endl;
 #endif

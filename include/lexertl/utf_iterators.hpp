@@ -267,8 +267,10 @@ namespace lexertl
 
         basic_utf8_out_iterator() = default;
 
-        explicit basic_utf8_out_iterator(const char_iterator& it_) :
-            _it(it_)
+        explicit basic_utf8_out_iterator(const char_iterator& it_,
+            const char_iterator& eoi_) :
+            _it(it_),
+            _eoi(eoi_)
         {
             next();
         }
@@ -320,12 +322,16 @@ namespace lexertl
 
     private:
         char_iterator _it = char_iterator();
+        char_iterator _eoi = char_iterator();
         std::array<char, 4> _bytes;
         unsigned char _count = 0;
         unsigned char _index = 0;
 
         void next()
         {
+            if (_it == _eoi)
+                return;
+
             const std::size_t ch_ = *_it;
 
             _count = len(ch_);
@@ -522,8 +528,10 @@ namespace lexertl
 
         basic_utf16_out_iterator() = default;
 
-        explicit basic_utf16_out_iterator(const char_iterator& it_) :
-            _it(it_)
+        explicit basic_utf16_out_iterator(const char_iterator& it_,
+            const char_iterator& eoi_) :
+            _it(it_),
+            _eoi(eoi_)
         {
             next();
         }
@@ -575,12 +583,16 @@ namespace lexertl
 
     private:
         char_iterator _it = char_iterator();
+        char_iterator _eoi = char_iterator();
         std::array<out_char, 2> _chars;
         unsigned char _count = 0;
         unsigned char _index = 0;
 
         void next()
         {
+            if (_it == _eoi)
+                return;
+
             const std::size_t ch_ = *_it;
 
             _count = len(ch_);
