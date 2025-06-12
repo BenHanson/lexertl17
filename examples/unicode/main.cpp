@@ -106,9 +106,9 @@ void test_unicode()
         std::wcout << '\'' << std::endl;
 #else
         str_.assign(lexertl::basic_utf8_out_iterator<const char32_t *>
-            (results_.first, results.second),
+            (results_.first, results_.second),
             lexertl::basic_utf8_out_iterator<const char32_t *>
-            (results_.second, results.second));
+            (results_.second, results_.second));
         std::cout << "Id: " << results_.id << ", Token: '" <<
             str_ << '\'' << std::endl;
 #endif
