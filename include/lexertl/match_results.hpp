@@ -63,7 +63,8 @@ namespace lexertl
 
         string_view view() const
         {
-            return string_view(first, length());
+            // &* in case we are using string iterators
+            return string_view(&*first, length());
         }
 
         string_view subview(const std::size_t soffset_,
