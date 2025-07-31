@@ -9,6 +9,7 @@
 #include "char_traits.hpp"
 #include "enum_operator.hpp"
 #include "enums.hpp"
+
 #include <iterator>
 #include <stack>
 #include <string>

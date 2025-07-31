@@ -6,13 +6,14 @@
 #ifndef LEXERTL_DEBUG_HPP
 #define LEXERTL_DEBUG_HPP
 
-#include <map>
-#include <ostream>
 #include "rules.hpp"
 #include "sm_to_csm.hpp"
 #include "state_machine.hpp"
 #include "stream_num.hpp"
 #include "string_token.hpp"
+
+#include <map>
+#include <ostream>
 #include <vector>
 
 namespace lexertl

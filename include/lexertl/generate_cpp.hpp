@@ -8,8 +8,9 @@
 
 #include "enum_operator.hpp"
 #include "enums.hpp"
-#include <sstream>
 #include "state_machine.hpp"
+
+#include <sstream>
 
 namespace lexertl
 {

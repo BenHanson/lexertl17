@@ -22,7 +22,8 @@ namespace lexertl::detail
         using node_type = typename node::node_type;
         using node_vector = typename node::node_vector;
 
-        basic_iteration_node(observer_ptr<node> next_, const bool greedy_) :
+        basic_iteration_node(observer_ptr<node> next_,
+            const greedy_repeat greedy_) :
             node(true),
             _next(next_),
             _greedy(greedy_)
@@ -58,7 +59,7 @@ namespace lexertl::detail
 
     private:
         observer_ptr<node> _next;
-        bool _greedy;
+        greedy_repeat _greedy;
 
         void copy_node(node_ptr_vector& node_ptr_vector_,
             node_stack& new_node_stack_, bool_stack& perform_op_stack_,

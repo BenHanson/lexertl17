@@ -7,8 +7,8 @@
 #define LEXERTL_REPLACE_HPP
 
 #include "lookup.hpp"
-#include "state_machine.hpp"
 #include "match_results.hpp"
+#include "state_machine.hpp"
 
 namespace lexertl
 {

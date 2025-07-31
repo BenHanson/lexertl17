@@ -7,10 +7,11 @@
 #ifndef LEXERTL_DOT_HPP
 #define LEXERTL_DOT_HPP
 
-#include <ostream>
 #include "rules.hpp"
 #include "state_machine.hpp"
 #include "sm_to_csm.hpp"
+
+#include <ostream>
 
 namespace lexertl
 {
@@ -213,7 +214,8 @@ namespace lexertl
                 {
                     const string dst_name = node_name(dfa_id_, iter_->first);
                     stream_ << "    " << src_name << " -> " << dst_name <<
-                        R"( [label = <<TABLE BORDER="0" CELLBORDER="0"><TR><TD>)";
+                        R"( [label = <<TABLE BORDER="0" )"
+                        R"(CELLBORDER="0"><TR><TD>)";
 
                     string_token token_ = iter_->second;
 

@@ -8,12 +8,13 @@
 
 #include "enum_operator.hpp"
 #include "enums.hpp"
-#include <locale>
-#include <map>
 #include "narrow.hpp"
 #include "observer_ptr.hpp"
 #include "parser/tokeniser/re_tokeniser.hpp"
 #include "runtime_error.hpp"
+
+#include <locale>
+#include <map>
 #include <set>
 #include <sstream>
 #include <string>
@@ -894,7 +895,8 @@ namespace lexertl
                 {
                     std::ostringstream ss_;
 
-                    ss_ << "Exit state is missing '>' for rule id " << id_ << '.';
+                    ss_ << "Exit state is missing '>' for rule id " <<
+                        id_ << '.';
                     throw runtime_error(ss_.str());
                 }
 

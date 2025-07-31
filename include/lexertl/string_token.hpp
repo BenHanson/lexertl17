@@ -7,10 +7,11 @@
 #define LEXERTL_STRING_TOKEN_HPP
 
 #include "char_traits.hpp"
-#include <ios> // Needed by GCC 4.4
-#include <iostream>
-#include <string>
 #include "stream_num.hpp"
+
+#include <ios> // Needed by GCC 4.4
+#include <sstream>
+#include <string>
 #include <utility>
 #include <vector>
 

@@ -6,9 +6,10 @@
 #ifndef LEXERTL_LOOKUP_HPP
 #define LEXERTL_LOOKUP_HPP
 
-#include <cassert>
 #include "match_results.hpp"
 #include "runtime_error.hpp"
+
+#include <cassert>
 #include <type_traits>
 
 namespace lexertl

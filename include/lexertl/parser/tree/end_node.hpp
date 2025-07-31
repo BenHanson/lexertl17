@@ -25,7 +25,7 @@ namespace lexertl::detail
         basic_end_node(const id_type id_,
             const id_type user_id_, const id_type unique_id_,
             const id_type next_dfa_, const id_type push_dfa_,
-            const bool pop_dfa_, const bool greedy_) :
+            const bool pop_dfa_, const greedy_repeat greedy_) :
             node(false),
             _id(id_),
             _user_id(user_id_),
@@ -52,7 +52,7 @@ namespace lexertl::detail
             return false;
         }
 
-        bool greedy() const override
+        greedy_repeat greedy() const override
         {
             return _greedy;
         }
@@ -111,7 +111,7 @@ namespace lexertl::detail
         id_type _next_dfa;
         id_type _push_dfa;
         bool _pop_dfa;
-        bool _greedy;
+        greedy_repeat _greedy;
         node_vector _followpos;
 
         void copy_node(node_ptr_vector&/*node_ptr_vector_*/,

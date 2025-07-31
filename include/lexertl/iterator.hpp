@@ -7,9 +7,10 @@
 #ifndef LEXERTL_ITERATOR_HPP
 #define LEXERTL_ITERATOR_HPP
 
-#include <iterator>
 #include "lookup.hpp"
 #include "state_machine.hpp"
+
+#include <iterator>
 
 namespace lexertl
 {

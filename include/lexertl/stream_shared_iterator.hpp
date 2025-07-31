@@ -7,12 +7,10 @@
 #ifndef LEXERTL_STREAM_SHARED_ITERATOR_HPP
 #define LEXERTL_STREAM_SHARED_ITERATOR_HPP
 
-#include <algorithm>
-// memcpy
-#include <cstring>
-#include <iostream>
-#include <math.h>
 #include "runtime_error.hpp"
+
+#include <istream>
+#include <iterator>
 #include <vector>
 
 namespace lexertl

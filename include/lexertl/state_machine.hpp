@@ -7,13 +7,14 @@
 #define LEXERTL_STATE_MACHINE_HPP
 
 // memcmp()
-#include <cstring>
 #include "internals.hpp"
-#include <map>
 #include "observer_ptr.hpp"
-#include <set>
 #include "sm_traits.hpp"
 #include "string_token.hpp"
+
+#include <cstring>
+#include <map>
+#include <set>
 
 namespace lexertl
 {
