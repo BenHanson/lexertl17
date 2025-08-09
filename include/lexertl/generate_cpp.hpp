@@ -18,7 +18,7 @@ namespace lexertl
     {
     public:
         template<typename char_type, typename id_type>
-        static void generate_cpp
+        static void generate
         (const std::string& name_,
             const basic_state_machine<char_type, id_type>& sm_,
             const bool pointers_, std::ostream& os_)
@@ -943,8 +943,7 @@ namespace lexertl
             std::ostream& os_, const std::false_type&)
         {
             output_tabs(additional_tabs_, os_);
-            os_ << "        const typename results::char_type prev_char_ = "
-                "*curr_++;\n";
+            os_ << "        const char_type prev_char_ = *curr_++;\n";
             output_tabs(additional_tabs_, os_);
             os_ << "        const ";
 
@@ -1035,14 +1034,13 @@ namespace lexertl
             output_tabs(additional_tabs_, os_);
             os_ << "        const std::size_t bytes_ =\n";
             output_tabs(additional_tabs_, os_);
-            os_ << "            sizeof(typename results::char_type) < 3 ?\n";
+            os_ << "            sizeof(char_type) < 3 ?\n";
             output_tabs(additional_tabs_, os_);
-            os_ << "            sizeof(typename results::char_type) : 3;\n";
+            os_ << "            sizeof(char_type) : 3;\n";
             output_tabs(additional_tabs_, os_);
             os_ << "        const std::size_t shift_[] = {0, 8, 16};\n";
             output_tabs(additional_tabs_, os_);
-            os_ << "        typename results::char_type prev_char_ = "
-                "*curr_++;\n\n";
+            os_ << "        char_type prev_char_ = *curr_++;\n\n";
 
             if (features_ & *feature_bit::bol)
             {
