@@ -1,4 +1,5 @@
 #include <fstream>
+#include <iostream>
 #include <lexertl/generator.hpp>
 #include <iomanip>
 #include <lexertl/lookup.hpp>

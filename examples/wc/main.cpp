@@ -1,3 +1,4 @@
+#include <iostream>
 //#include <lexertl/debug.hpp>
 #include <lexertl/generator.hpp>
 #include <lexertl/lookup.hpp>

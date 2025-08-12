@@ -3,6 +3,7 @@
 
 #include "stdafx.h"
 
+#include <iostream>
 #include "fail_tests.h"
 #include <lexertl/parser/tokeniser/re_tokeniser.hpp>
 

@@ -1,4 +1,5 @@
 #include <fstream>
+#include <iostream>
 #include <lexertl/generator.hpp>
 #include <lexertl/lookup.hpp>
 #include <lexertl/stream_shared_iterator.hpp>
