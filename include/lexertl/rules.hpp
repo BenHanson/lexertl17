@@ -767,7 +767,8 @@ namespace lexertl
                 }
             } while (tokens_.back()._type != detail::token_type::END);
 
-            abstemious<rules_char_type, char_type>::prune(tokens_, ab_indexes_);
+            if (!name_)
+                abstemious<rules_char_type, char_type>::prune(tokens_, ab_indexes_);
 
             if (tokens_.size() == 2)
             {
