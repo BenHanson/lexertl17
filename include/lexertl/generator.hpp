@@ -265,8 +265,9 @@ namespace lexertl
 
                         // Prune abstemious transitions from end states.
                         if (*ptr_ && !(*ptr_ & *state_bit::greedy) &&
-                            equivset_->_greedy == greedy_repeat::no &&
-                            index_ == seen_vectors_.size() - 1)
+                            equivset_->_greedy == greedy_repeat::no)
+                            // Works when one regex, but not when multiple:
+                            // && index_ == seen_vectors_.size() - 1)
                         {
                             continue;
                         }
