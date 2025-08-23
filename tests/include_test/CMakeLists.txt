@@ -9,7 +9,7 @@
 include_directories(.)
 
 add_executable(lexertl_include_tests
-	# bitvector.cpp
+	abstemious.cpp
 	blocks.cpp
 	charset.cpp
 	char_traits.cpp

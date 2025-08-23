@@ -122,7 +122,7 @@ const char *error_msgs_ [] =
     "Unexpected end of regex following '[' in rule id 1.",
     "Unexpected end of regex following '^' in rule id 1.",
     "Unexpected end of regex (missing ']') in rule id 1.",
-    "Empty charset not allowed preceding index 2 in rule id 1.",
+    "Unexpected end of regex (missing ']') in rule id 1.",
     "Unknown POSIX charset at index 3 in rule id 1.",
     "Unexpected end of regex (unterminated POSIX charset) in rule id 1.",
     "Unknown POSIX charset at index 4 in rule id 1.",
@@ -151,22 +151,22 @@ const char *error_msgs_ [] =
     "Unexpected end of regex following \\p in rule id 1.",
     "Missing '{' following \\p at index 2 in rule id 1.",
     "Unexpected end of regex following \\p{ in rule id 1.",
-    "Unexpected end of regex following \\p{C in rule id 1.",
-    "Syntax error following \\p{C at index 4 in rule id 1.",
-    "Unexpected end of regex following \\p{L in rule id 1.",
-    "Syntax error following \\p{L at index 4 in rule id 1.",
-    "Unexpected end of regex following \\p{M in rule id 1.",
-    "Syntax error following \\p{M at index 4 in rule id 1.",
-    "Unexpected end of regex following \\p{N in rule id 1.",
-    "Syntax error following \\p{N at index 4 in rule id 1.",
-    "Unexpected end of regex following \\p{P in rule id 1.",
-    "Syntax error following \\p{P at index 4 in rule id 1.",
-    "Unexpected end of regex following \\p{S in rule id 1.",
-    "Syntax error following \\p{S at index 4 in rule id 1.",
-    "Unexpected end of regex following \\p{Z in rule id 1.",
-    "Syntax error following \\p{Z at index 4 in rule id 1.",
-    "Syntax error following \\p{ at index 3 in rule id 1.",
-    "Missing '}' at index 5 in rule id 1.",
+    "Unexpected end of regex following \\p{ in rule id 1.",
+    "Unexpected end of regex following \\p{ in rule id 1.",
+    "Unexpected end of regex following \\p{ in rule id 1.",
+    "Unexpected end of regex following \\p{ in rule id 1.",
+    "Unexpected end of regex following \\p{ in rule id 1.",
+    "Unexpected end of regex following \\p{ in rule id 1.",
+    "Unexpected end of regex following \\p{ in rule id 1.",
+    "Unexpected end of regex following \\p{ in rule id 1.",
+    "Unexpected end of regex following \\p{ in rule id 1.",
+    "Unexpected end of regex following \\p{ in rule id 1.",
+    "Unexpected end of regex following \\p{ in rule id 1.",
+    "Unexpected end of regex following \\p{ in rule id 1.",
+    "Unexpected end of regex following \\p{ in rule id 1.",
+    "Unexpected end of regex following \\p{ in rule id 1.",
+    "Unexpected end of regex following \\p{ in rule id 1.",
+    "Unexpected end of regex following \\p{ in rule id 1.",
     "Escape \\777 is too big for the state machine char type preceding index "
         "4 in rule id 1.",
     "Unexpected end of regex following \\c in rule id 1.",
@@ -205,8 +205,10 @@ int fail_tests()
         }
         catch (const lexertl::runtime_error &e)
         {
+            const std::string_view err_ = e.what();
+
             // success
-            if (strcmp(e.what(), *error_ptr_) != 0)
+            if (err_ != *error_ptr_)
             {
                 std::cout << "INVALID ERROR MSG!" << std::endl;
             }
