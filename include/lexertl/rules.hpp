@@ -773,7 +773,7 @@ namespace lexertl
                     prune(tokens_, ab_indexes_);
             }
 
-            if (tokens_.size() == 2 &&!(_flags & *regex_flags::match_zero_len))
+            if (tokens_.size() == 2 && !(_flags & *regex_flags::match_zero_len))
             {
                 std::ostringstream ss_;
 
