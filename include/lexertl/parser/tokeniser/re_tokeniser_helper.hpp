@@ -7,13 +7,18 @@
 #define LEXERTL_RE_TOKENISER_HELPER_HPP
 
 #include "../../char_traits.hpp"
-// strlen()
-#include <cstring>
 #include "../../enum_operator.hpp"
+#include "../../enums.hpp"
 #include "re_tokeniser_state.hpp"
 #include "../../runtime_error.hpp"
-#include <sstream>
 #include "../../string_token.hpp"
+
+// strlen()
+#include <cstring>
+#include <ios>
+#include <locale>
+#include <sstream>
+#include <string>
 
 namespace lexertl::detail
 {

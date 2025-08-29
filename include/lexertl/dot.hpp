@@ -8,10 +8,14 @@
 #define LEXERTL_DOT_HPP
 
 #include "rules.hpp"
-#include "state_machine.hpp"
 #include "sm_to_csm.hpp"
+#include "state_machine.hpp"
 
+#include <cstdint>
+#include <ios>
 #include <ostream>
+#include <sstream>
+#include <string>
 
 namespace lexertl
 {

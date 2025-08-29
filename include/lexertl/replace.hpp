@@ -10,6 +10,9 @@
 #include "match_results.hpp"
 #include "state_machine.hpp"
 
+#include <iterator>
+#include <string>
+
 namespace lexertl
 {
     template<class out_iter, class fwd_iter,

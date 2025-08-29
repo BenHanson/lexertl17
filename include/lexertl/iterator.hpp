@@ -8,9 +8,11 @@
 #define LEXERTL_ITERATOR_HPP
 
 #include "lookup.hpp"
+#include "match_results.hpp"
 #include "state_machine.hpp"
 
 #include <iterator>
+#include <string>
 
 namespace lexertl
 {
@@ -60,15 +62,16 @@ namespace lexertl
             return &_results;
         }
 
-        bool operator ==(const iterator& rhs_) const
+        friend bool operator ==(const iterator& lhs_, const iterator& rhs_)
         {
-            return _sm == rhs_._sm && (_sm == nullptr ? true :
-                _results == rhs_._results);
+            return lhs_._sm == rhs_._sm && (lhs_._sm == nullptr ?
+                true :
+                lhs_._results == rhs_._results);
         }
 
-        bool operator !=(const iterator& rhs_) const
+        friend bool operator !=(const iterator& lhs_, const iterator& rhs_)
         {
-            return !(*this == rhs_);
+            return !(lhs_ == rhs_);
         }
 
         const sm_type& sm() const
