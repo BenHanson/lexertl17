@@ -7,12 +7,12 @@
 #define LEXERTL_STATE_MACHINE_HPP
 
 #include "enums.hpp"
-// memcmp()
 #include "internals.hpp"
 #include "observer_ptr.hpp"
 #include "sm_traits.hpp"
 #include "string_token.hpp"
 
+// memcmp()
 #include <cstdint>
 #include <cstring>
 #include <map>

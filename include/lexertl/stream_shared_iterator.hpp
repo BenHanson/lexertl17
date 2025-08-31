@@ -111,18 +111,20 @@ namespace lexertl
             return *this;
         }
 
-        bool operator ==(const basic_stream_shared_iterator& rhs_) const
+        friend bool operator ==(const basic_stream_shared_iterator& lhs_,
+            const basic_stream_shared_iterator& rhs_)
         {
-            return _index == rhs_._index &&
-                (_shared == rhs_._shared ||
-                    (_index == shared::npos() ||
+            return lhs_._index == rhs_._index &&
+                (lhs_._shared == rhs_._shared ||
+                    (lhs_._index == shared::npos() ||
                         rhs_._index == shared::npos()) &&
-                    (!_shared || !rhs_._shared));
+                    (!lhs_._shared || !rhs_._shared));
         }
 
-        bool operator !=(const basic_stream_shared_iterator& rhs_) const
+        friend bool operator !=(const basic_stream_shared_iterator& lhs_,
+            const basic_stream_shared_iterator& rhs_)
         {
-            return !(*this == rhs_);
+            return !(lhs_ == rhs_);
         }
 
         const char_type& operator *()
