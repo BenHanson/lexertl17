@@ -1295,7 +1295,7 @@ namespace lexertl
         {
             if (id_ == eoi())
             {
-                throw runtime_error("Cannot resuse the id for eoi.");
+                throw runtime_error("Cannot re-use the id for eoi.");
             }
 
             if (id_ == npos())
