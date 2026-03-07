@@ -71,6 +71,98 @@ int main()
 }
 ```
 
+The same thing using lexertl::range:
+
+```cpp
+#include <lexertl/generator.hpp>
+#include <lexertl/iterator.hpp>
+#include <lexertl/range.hpp>
+
+#include <iostream>
+
+int main()
+{
+    lexertl::rules rules;
+    lexertl::state_machine sm;
+
+    rules.push("[0-9]+", 1);
+    rules.push("[a-z]+", 2);
+    lexertl::generator::build(rules, sm);
+
+    std::string input("abc012Ad3e4");
+    lexertl::siterator iter(input.begin(), input.end(), sm);
+    lexertl::siterator end;
+    lexertl::range range(iter, end);
+
+    for (const auto& results : range)
+    {
+        std::cout << "Id: " << results.id << ", Token: '" <<
+            results.str() << "'\n";
+    }
+
+    return 0;
+}
+```
+
+### Use lexertl::replace()
+
+Note the use of a `skip()` rule to avoid replacing everything
+
+```cpp
+#include <lexertl/generator.hpp>
+#include <lexertl/replace.hpp>
+
+#include <iostream>
+
+int main()
+{
+    lexertl::rules rules;
+    lexertl::state_machine sm;
+
+    rules.push("[0-9]+", 1);
+    rules.push("[a-z]+", 2);
+    rules.push("(?s:.)", lexertl::rules::skip());
+    lexertl::generator::build(rules, sm);
+
+    std::string input("abc 012 A d 3 e 4");
+
+    std::cout<< lexertl::replace(input, sm, "rep") << '\n';
+    return 0;
+}
+```
+
+Outputs `rep rep A rep rep rep rep`
+
+Replace using a map of tokens:
+
+```cpp
+#include <lexertl/generator.hpp>
+#include <lexertl/replace.hpp>
+
+#include <iostream>
+
+int main()
+{
+    lexertl::rules rules;
+    lexertl::state_machine sm;
+
+    rules.push("[0-9]+", 1);
+    rules.push("[a-z]+", 2);
+    lexertl::generator::build(rules, sm);
+
+    std::string input("abc 012 A d 3 e 4");
+
+    std::cout<< lexertl::replace(input, sm,
+        {
+            {1, "number"},
+            {2, "word"}
+        }) << '\n';
+    return 0;
+}
+```
+
+Outputs `word number A word number word number`
+
 ## More examples and documentation
 
 See http://www.benhanson.net/lexertl.html for full documentation and more usage examples.
