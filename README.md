@@ -154,7 +154,7 @@ You can exclude strings with the following rules:
     rules.push(R"(R\"\((?s:.)*?\)\")", lexertl::rules::skip());
 ```
 
-### Use lexertl::replace()
+### Use `lexertl::replace()`
 
 Note the use of a `skip()` rule to avoid replacing characters that do not match the other rules.
 
