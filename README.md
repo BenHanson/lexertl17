@@ -41,7 +41,7 @@ int main()
 }
 ```
 
-#### The same thing using lexertl::iterator:
+#### The same thing using `lexertl::iterator`:
 
 ```cpp
 #include <lexertl/generator.hpp>
