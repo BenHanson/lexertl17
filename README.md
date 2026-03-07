@@ -41,7 +41,7 @@ int main()
 }
 ```
 
-The same thing using lexertl::iterator:
+#### The same thing using lexertl::iterator:
 
 ```cpp
 #include <lexertl/generator.hpp>
@@ -71,7 +71,7 @@ int main()
 }
 ```
 
-The same thing using lexertl::range:
+#### The same thing using `lexertl::range`:
 
 ```cpp
 #include <lexertl/generator.hpp>
@@ -104,9 +104,59 @@ int main()
 }
 ```
 
+### Search Text With a Lexer
+
+All that is required to allow a lexer to search is to add a simple `skip()` rule:
+
+```cpp
+#include <lexertl/generator.hpp>
+#include <lexertl/iterator.hpp>
+#include <lexertl/range.hpp>
+
+#include <iostream>
+
+int main()
+{
+    lexertl::rules rules;
+    lexertl::state_machine sm;
+
+    rules.push("[0-9]+", 1);
+    rules.push("(?s:.)", lexertl::rules::skip());
+    lexertl::generator::build(rules, sm);
+
+    std::string input("abc012Ad3e4");
+    lexertl::siterator iter(input.begin(), input.end(), sm);
+    lexertl::siterator end;
+    lexertl::range range(iter, end);
+
+    for (const auto& results : range)
+    {
+        std::cout << "Id: " << results.id << ", Token: '" <<
+            results.view() << "'\n";
+    }
+
+    return 0;
+}
+```
+
+You can increase the sophistication of the search by completely ignoring comments (for example) by adding the following rule:
+
+```
+    rules.push(R"("//".*|"/*"(?s:.)*?"*/")", lexertl::rules::skip());
+```
+
+You can exclude strings with the following rules:
+
+```
+    // Exclude instances of '"'
+    rules.push(R"('([^'\\\r\n]|\\.)*')", lexertl::rules::skip());
+    rules.push(R"(\"([^"\\\r\n]|\\.)*\")", lexertl::rules::skip());
+    rules.push(R"(R\"\((?s:.)*?\)\")", lexertl::rules::skip());
+```
+
 ### Use lexertl::replace()
 
-Note the use of a `skip()` rule to avoid replacing everything
+Note the use of a `skip()` rule to avoid replacing characters that do not match the other rules.
 
 ```cpp
 #include <lexertl/generator.hpp>
@@ -133,9 +183,9 @@ int main()
 
 Outputs `rep rep A rep rep rep rep`
 
-Replace using a map of tokens:
+#### Replace using a map of tokens:
 
-(there is no need for a skip() rule in this case)
+(The `skip()` rule is not strictly necessary here but it is more efficient to include it)
 
 ```cpp
 #include <lexertl/generator.hpp>
@@ -150,6 +200,7 @@ int main()
 
     rules.push("[0-9]+", 1);
     rules.push("[a-z]+", 2);
+    rules.push("(?s:.)", lexertl::rules::skip());
     lexertl::generator::build(rules, sm);
 
     std::string input("abc 012 A d 3 e 4");
