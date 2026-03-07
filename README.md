@@ -33,7 +33,7 @@ int main()
     while (results.id != 0)
     {
         std::cout << "Id: " << results.id << ", Token: '" <<
-            results.str () << "'\n";
+            results.view() << "'\n";
         lexertl::lookup(sm, results);
     }
 
@@ -64,7 +64,7 @@ int main()
     for (; iter != end; ++iter)
     {
         std::cout << "Id: " << iter->id << ", Token: '" <<
-            iter->str() << "'\n";
+            iter->view() << "'\n";
     }
 
     return 0;
@@ -97,7 +97,7 @@ int main()
     for (const auto& results : range)
     {
         std::cout << "Id: " << results.id << ", Token: '" <<
-            results.str() << "'\n";
+            results.view() << "'\n";
     }
 
     return 0;
