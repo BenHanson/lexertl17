@@ -135,6 +135,8 @@ Outputs `rep rep A rep rep rep rep`
 
 Replace using a map of tokens:
 
+(there is no need for a skip() rule in this case)
+
 ```cpp
 #include <lexertl/generator.hpp>
 #include <lexertl/replace.hpp>
