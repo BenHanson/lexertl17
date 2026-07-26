@@ -216,6 +216,53 @@ int main()
 
 Outputs `word number A word number word number`
 
+#### Replace using a map of functions:
+
+
+```cpp
+#include <lexertl/generator.hpp>
+#include <lexertl/replace.hpp>
+
+#include <iostream>
+
+int main()
+{
+    lexertl::rules rules;
+    lexertl::state_machine sm;
+
+    rules.push("[0-9]+", 1);
+    rules.push("[a-z]+", 2);
+    rules.push("(?s:.)", lexertl::rules::skip());
+    lexertl::generator::build(rules, sm);
+
+    std::string input("abc 012 A d 3 e 4");
+
+	std::map<uint16_t, std::string (*)(std::string::const_iterator&,
+		std::string::const_iterator&)> map =
+	{
+		{
+            (uint16_t)1, [](std::string::const_iterator& first, std::string::const_iterator& second)
+                {
+                    return "Number: " + std::string(first, second);
+                }
+        },
+        {
+            (uint16_t)2, [](std::string::const_iterator& first, std::string::const_iterator& second)
+                {
+                    return "Word: " + std::string(first, second);
+                }
+        }
+	};
+
+	lexertl::replace(std::ostreambuf_iterator<char>(std::cout),
+		input.begin(), input.end(), sm, map);
+	std::cout << '\n';
+    return 0;
+}
+```
+
+Outputs `Word: abc Number: 012 A Word: d Number: 3 Word: e Number: 4`
+
 ## More examples and documentation
 
 See http://www.benhanson.net/lexertl.html for full documentation and more usage examples.
