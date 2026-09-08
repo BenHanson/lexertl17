@@ -141,13 +141,13 @@ int main()
 
 You can increase the sophistication of the search by completely ignoring comments (for example) by adding the following rule:
 
-```
+```cpp
     rules.push(R"("//".*|"/*"(?s:.)*?"*/")", lexertl::rules::skip());
 ```
 
 You can exclude strings with the following rules:
 
-```
+```cpp
     // Exclude instances of '"'
     rules.push(R"('([^'\\\r\n]|\\.)*')", lexertl::rules::skip());
     rules.push(R"(\"([^"\\\r\n]|\\.)*\")", lexertl::rules::skip());
