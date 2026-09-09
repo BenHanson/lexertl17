@@ -1,7 +1,9 @@
 lexertl17: The Modular Lexical Analyser Generator
 =======
 
-lexertl is a header-only library for writing lexical analysers. With lexertl you can:
+lexertl is a header-only library for constructing lexical analysers.
+
+With lexertl you can:
 
 - Build lexical analysers at runtime
 - Scan Unicode and ASCII input
