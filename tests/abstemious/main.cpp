@@ -31,7 +31,6 @@ int main()
 		{"a{1,3}?", "aaa", {{0, 1}, {1, 2}, {2, 3}}},
 		{"\\w+?w", "...ccccccwcccccw", {{3, 10}, {10, 16}}},
 		{"\\W+\\w+?w", "...ccccccwcccccw", {{0, 10}}},
-		// This generates the wrong state machine
 		{"abc|\\w+?", "abd", {{0, 1}, {1, 2}, {2, 3}}},
 		{"abc|\\w+?", "abcd", {{0, 3}, {3, 4}}},
 		{"<\\s*tag[^>]*>(.*?)<\\s*[/]tag\\s*>",
