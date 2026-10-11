@@ -579,6 +579,8 @@ namespace lexertl
                 if (lhs_ < rhs_ &&
                     tokens_[lhs_]._type == detail::token_type::OPENPAREN &&
                     tokens_[rhs_]._type == detail::token_type::CLOSEPAREN &&
+                    // regexes such as (a)(b) must not have their
+                    // outer parenthesis removed.
                     balanced_parens(tokens_.begin() + lhs_ + 1,
                         tokens_.begin() + rhs_))
                 {
