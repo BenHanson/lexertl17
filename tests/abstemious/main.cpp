@@ -24,6 +24,15 @@ int main()
         {"a*?", "aa", {{0, 0}, {1, 1}}},
         {"ab*?|c", "abc", {{0, 1}, {2, 3}}},
         {"x(a*?|(b)c)", "xbc", {{0, 3}}},
+        // Whole alternative removed inside a group: the group becomes optional
+        {"x(a*?|b)", "xa xb", {{0, 1}, {3, 5}}},
+        {"x(ab|c*?)", "xc xab", {{0, 1}, {3, 6}}},
+        {"x(a*?|b*?)", "xa", {{0, 1}}},
+        {"x(a*?|(b)c)", "xa", {{0, 1}}},
+        // Trailing lazy preceded by content in the same alternative
+        {"xa*?|b", "xab", {{0, 1}, {2, 3}}},
+        {"a{2,}?", "aaaaa", {{0, 2}, {2, 4}}},
+        {"a{00,3}?|b", "ab", {{1, 2}}},
         {"^a*?$", "aa", {{0, 2}}},
         {"^.*?$", "aa", {{0, 2}}},
         {"^(a)*?$", "aa", {{0, 2}}},
@@ -46,7 +55,7 @@ int main()
             "here is some text< /tag > <tag></tag>", {{1, 49}, {50, 61}}},
         {"xx-{0,2}?(?:[-+][0-9])??$", "xx--", {{0, 4}}},
         {"xx.{0,2}?(?:[-+][0-9])??$", "xx--", {{0, 4}}},
-        {"xx.{0,2}?(?:[-+][0-9])??$", "xx--", {{0, 4}}},
+        //{"xx.{0,2}?(?:[-+][0-9])??$", "xx--", {{0, 4}}},
         {"xx[-/]{0,2}?(?:[-+][0-9])??$", "xx--", {{0, 4}}}
     };
     bool failures = false;
@@ -70,7 +79,7 @@ int main()
 
         for (; matches_iter != matches_end && iter->id; ++matches_iter)
         {
-            if (matches_iter == matches_end ||
+            if (matches_iter == matches_end || iter->id != 1 ||
                 iter->first - t.text != matches_iter->first ||
                 iter->second - t.text != matches_iter->second)
             {
@@ -89,6 +98,42 @@ int main()
         {
             failures = true;
             std::cout << t.regex << " failed to match " << t.text << "\n\n";
+        }
+    }
+
+    // The multi-state push() must set the BOL feature the same way as the
+    // single-state one when a lazy regex is split into several alternatives.
+    {
+        const char* text = "ab\nc\nab";
+        const std::vector<std::pair<std::size_t, std::size_t>> expected =
+            {{0, 2}, {3, 4}, {5, 7}};
+        lexertl::rules rules;
+        lexertl::state_machine sm;
+
+        rules.push("INITIAL", "^a*?b|c", 1, ".");
+        rules.push("INITIAL", "(?s:.)", lexertl::rules::skip(), ".");
+        lexertl::generator::build(rules, sm);
+
+        lexertl::citerator iter(text, text + strlen(text), sm);
+        auto exp_iter = expected.begin();
+
+        for (; exp_iter != expected.end() && iter->id; ++exp_iter, ++iter)
+        {
+            if (iter->id != 1 ||
+                iter->first - text != exp_iter->first ||
+                iter->second - text != exp_iter->second)
+            {
+                failures = true;
+                std::cout << "multi-state ^a*?b|c failed to match "
+                    "\"ab\\nc\\nab\"\n\n";
+            }
+        }
+
+        if (exp_iter != expected.end() || iter->id)
+        {
+            failures = true;
+            std::cout << "multi-state ^a*?b|c failed to match "
+                "\"ab\\nc\\nab\"\n\n";
         }
     }
 
