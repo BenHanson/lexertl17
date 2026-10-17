@@ -32,10 +32,6 @@ add_executable(lexertl_include_tests
 	node.cpp
 	observer_ptr.cpp
 	parser.cpp
-	# ptr_list.cpp
-	# ptr_map.cpp
-	# ptr_stack.cpp
-	# ptr_vector.cpp
 	replace.cpp
 	re_token.cpp
 	re_tokeniser.cpp
