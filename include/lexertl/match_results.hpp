@@ -67,15 +67,23 @@ namespace lexertl
 
         string_view view() const
         {
-            // &* in case we are using string iterators
-            return string_view(&*first, length());
+            if (first == eoi)
+                return string_view();
+            else
+                // &* in case we are using string iterators
+                return string_view(&*first, length());
         }
 
         string_view subview(const std::size_t soffset_,
             const std::size_t eoffset_) const
         {
-            return string_view(first + soffset_,
-                length() - soffset_ - eoffset_);
+            const std::size_t offset_ = soffset_ + eoffset_;
+
+            if (first == eoi || offset_ > length())
+                return std::string_view();
+            else
+                // &* in case we are using string iterators
+                return string_view(&*first + soffset_, length() - offset_);
         }
 
         virtual void clear()
