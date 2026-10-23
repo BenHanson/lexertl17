@@ -62,6 +62,10 @@ namespace lexertl
         string substr(const std::size_t soffset_,
             const std::size_t eoffset_) const
         {
+            // Offsets that do not fit give an empty string (as subview())
+            if (soffset_ > length() || eoffset_ > length() - soffset_)
+                return string();
+
             return string(first + soffset_, second - eoffset_);
         }
 
@@ -77,13 +81,16 @@ namespace lexertl
         string_view subview(const std::size_t soffset_,
             const std::size_t eoffset_) const
         {
-            const std::size_t offset_ = soffset_ + eoffset_;
-
-            if (first == eoi || offset_ > length())
+            // Not soffset_ + eoffset_, which can wrap around
+            if (first == eoi || soffset_ > length() ||
+                eoffset_ > length() - soffset_)
+            {
                 return std::string_view();
+            }
             else
                 // &* in case we are using string iterators
-                return string_view(&*first + soffset_, length() - offset_);
+                return string_view(&*first + soffset_,
+                    length() - soffset_ - eoffset_);
         }
 
         virtual void clear()
